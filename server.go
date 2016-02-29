@@ -2,8 +2,17 @@ package main
 
 import (
 	"fmt"
+	"github.com/codegangsta/negroni"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("Server Started at http//localhost:80")
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintf(w, "Qolab: Pipelines")
+	})
+
+	n := negroni.Classic()
+	n.UseHandler(mux)
+	n.Run(":3000")
 }
