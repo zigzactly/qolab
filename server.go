@@ -1,18 +1,30 @@
 package main
 
 import (
-	"fmt"
-	"github.com/codegangsta/negroni"
-	"net/http"
+	//"fmt"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(w, "Qolab: Pipelines")
-	})
+	r := Router()
+	StartServer(r)
+}
 
-	n := negroni.Classic()
-	n.UseHandler(mux)
-	n.Run(":3000")
+func Router() *gin.Engine {
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "home",
+		})
+	})
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	return r
+}
+
+func StartServer(r *gin.Engine) {
+	r.Run(":8080")
 }
